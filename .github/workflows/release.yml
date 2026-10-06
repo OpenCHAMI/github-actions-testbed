@@ -1,0 +1,94 @@
+# SPDX-FileCopyrightText: © 2026 OpenCHAMI a Series of LF Projects, LLC
+# SPDX-License-Identifier: MIT
+
+name: release
+
+# PR images and releases; build-release-goreleaser picks the mode from the
+# event:
+# - pull_request: pushes ghcr.io/openchami/github-actions-testbed:pr-<N>.
+# - v* tag push: semver images, signed packages, draft release, validation,
+#   then publish. Safe to tag freely: nothing depends on this repo.
+
+on:
+  pull_request:
+  push:
+    tags:
+      - v*
+
+permissions:
+  contents: read
+
+jobs:
+  # Throwaway signing key, regenerated each run. Not a secret (it travels as
+  # a job output); fine here, since the packages are only for testing.
+  test-key:
+    runs-on: ubuntu-slim
+    outputs:
+      gpg-key-b64: ${{ steps.key.outputs.gpg-key-b64 }}
+    steps:
+      - name: Generate throwaway GPG key
+        id: key
+        run: |
+          set -euo pipefail
+          GNUPGHOME=$(mktemp -d)
+          export GNUPGHOME
+          gpg --batch --quiet --passphrase '' \
+            --quick-gen-key 'github-actions testbed throwaway key <noreply@openchami.org>' rsa3072 sign 1d
+          echo "gpg-key-b64=$(gpg --batch --armor --export-secret-keys | base64 -w0)" >> "$GITHUB_OUTPUT"
+
+  goreleaser:
+    needs: test-key
+    permissions:
+      contents: write      # release creation, uploading assets
+      packages: write      # image push, container provenance
+      id-token: write      # Sigstore signing (attest-build-provenance)
+      attestations: write  # build provenance attestations
+    uses: OpenCHAMI/github-actions/.github/workflows/build-release-goreleaser.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    with:
+      go-version-file: go.mod
+      registry-subject-name: ghcr.io/openchami/github-actions-testbed
+    secrets:
+      gpg-key: ${{ github.event_name == 'push' && needs.test-key.outputs.gpg-key-b64 || '' }}
+
+  trivy:
+    # Fork PRs build but don't push, so there is no image to scan.
+    needs: goreleaser
+    if: ${{ needs.goreleaser.outputs.digest != '' }}
+    uses: OpenCHAMI/github-actions/.github/workflows/trivy-image-scan.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    permissions:
+      contents: read          # baseline for checkout
+      security-events: write  # SARIF upload to GHAS
+    with:
+      image-ref: ghcr.io/openchami/github-actions-testbed@${{ needs.goreleaser.outputs.digest }}
+      exit-code: '0'
+
+  validate:
+    # PR builds produce no packages (they're validated in build.yml).
+    if: ${{ github.event_name == 'push' }}
+    needs: goreleaser
+    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    with:
+      packages: |
+        - name: testbed-quadlet*.rpm
+          files:
+            - /etc/openchami
+            - /etc/openchami/configs
+            - /etc/openchami/configs/testbed.yaml
+            - /usr/share/containers/systemd/testbed.container
+            - /usr/share/containers/systemd/testbed.container.d
+            - /usr/share/containers/systemd/testbed.container.d/10-defaults.conf
+            - /usr/share/licenses/testbed-quadlet
+            - /usr/share/licenses/testbed-quadlet/MIT.txt
+        - name: testbed-quadlet*.deb
+          files:
+            - /etc/openchami/configs/testbed.yaml
+            - /usr/share/containers/systemd/testbed.container
+            - /usr/share/containers/systemd/testbed.container.d/10-defaults.conf
+            - /usr/share/doc/testbed-quadlet/copyright
+
+  publish:
+    if: ${{ github.event_name == 'push' }}
+    needs: [goreleaser, validate]
+    permissions:
+      contents: write   # publish the draft GitHub Release
+    uses: OpenCHAMI/github-actions/.github/workflows/publish-release.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)

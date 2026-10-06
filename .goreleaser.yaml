@@ -1,0 +1,132 @@
+# SPDX-FileCopyrightText: © 2026 OpenCHAMI a Series of LF Projects, LLC
+# SPDX-License-Identifier: MIT
+#
+# Exercises every release effect of the OpenCHAMI/github-actions GoReleaser
+# workflows. Annotated reference:
+# https://github.com/OpenCHAMI/github-actions/blob/main/.goreleaser.example.yml
+
+version: 2
+
+project_name: github-actions-testbed
+
+before:
+  hooks:
+    - go mod tidy
+    # Pin the packaged quadlet to the image this run publishes.
+    - make quadlet-render IMAGE_TAG={{ .Tag }}
+
+builds:
+  - id: testbed
+    main: ./cmd/testbed
+    binary: testbed
+    goos: [linux]
+    goarch: [amd64, arm64]
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - >-
+        -s -w
+        -X main.version={{ .Version }}
+        -X main.commit={{ .Commit }}
+        -X main.buildHost={{ .Env.BUILD_HOST }}
+
+archives:
+  - id: testbed
+    ids: [testbed]
+    formats: [tar.gz]
+    files:
+      - LICENSES/*
+
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+
+dockers_v2:
+  - id: testbed
+    ids: [testbed]
+    dockerfile: Dockerfile
+    images:
+      - ghcr.io/openchami/github-actions-testbed
+    tags:
+      - "{{ .Tag }}"                                   # vX.Y.Z or pr-N
+      - '{{ if ne .Env.IS_PR_BUILD "true" }}{{ .Major }}.{{ .Minor }}{{ end }}'
+      - '{{ if ne .Env.IS_PR_BUILD "true" }}{{ .Major }}{{ end }}'
+      - '{{ if ne .Env.IS_PR_BUILD "true" }}latest{{ end }}'
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    labels:
+      org.opencontainers.image.title: "{{ .ProjectName }}"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.source: https://github.com/OpenCHAMI/github-actions-testbed
+
+nfpms:
+  - id: testbed-quadlet
+    package_name: testbed-quadlet
+    meta: true
+    formats: [rpm, deb]
+    file_name_template: "{{ .ConventionalFileName }}"
+    vendor: OpenCHAMI
+    homepage: https://github.com/OpenCHAMI/github-actions-testbed
+    maintainer: "Sean Tronsen <sean.tronsen@gmail.com>"
+    description: Podman Quadlet test package for the OpenCHAMI github-actions workflows.
+    license: MIT
+    section: admin
+    contents:
+      - dst: /etc/openchami
+        type: dir
+      - dst: /etc/openchami/configs
+        type: dir
+      - src: packaging/configs/testbed.yaml
+        dst: /etc/openchami/configs/testbed.yaml
+        type: "config|noreplace"
+      - src: build/quadlet/testbed.container
+        dst: /usr/share/containers/systemd/testbed.container
+      - dst: /usr/share/containers/systemd/testbed.container.d
+        type: dir
+      - src: packaging/systemd/testbed.container.d/10-defaults.conf
+        dst: /usr/share/containers/systemd/testbed.container.d/10-defaults.conf
+      - dst: /usr/share/licenses/testbed-quadlet
+        type: dir
+        packager: rpm
+      - src: LICENSES/MIT.txt
+        dst: /usr/share/licenses/testbed-quadlet/MIT.txt
+        type: license
+        packager: rpm
+      - src: packaging/deb/copyright
+        dst: /usr/share/doc/testbed-quadlet/copyright
+        packager: deb
+    scripts:
+      postinstall: packaging/scripts/postinstall.sh
+      preremove: packaging/scripts/preremove.sh
+      postremove: packaging/scripts/postremove.sh
+    overrides:
+      rpm:
+        release: "1.el9"
+        dependencies:
+          - podman >= 5.0.0
+          - systemd
+      deb:
+        release: "1"
+        dependencies:
+          - podman (>= 5.0.0)
+          - systemd
+    rpm:
+      signature:
+        key_file: "{{ .Env.GPG_KEY_PATH }}"
+
+release:
+  disable: '{{ if eq .Env.IS_PR_BUILD "true" }}true{{ else }}false{{ end }}'
+  name_template: "v{{ .Version }}"
+  prerelease: auto
+  footer: |
+    ## Verifying packages
+
+    ```bash
+    rpm --import gpg-public-key.asc
+    rpm -K testbed-quadlet-*.rpm
+    ```
+
+changelog:
+  use: git

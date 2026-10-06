@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: © 2026 OpenCHAMI a Series of LF Projects, LLC
+# SPDX-License-Identifier: MIT
+
+name: test
+
+# All tests under one gate: the `test` job is the required status check.
+# Unit tests also upload coverage to Coveralls (README badge); the repo must
+# be enrolled in Coveralls.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test-unit-go:
+    uses: OpenCHAMI/github-actions/.github/workflows/test-unit-go.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    with:
+      go-version-file: go.mod
+      coverage: true
+
+  test:
+    if: ${{ always() }}
+    needs: [test-unit-go]
+    runs-on: ubuntu-slim
+    steps:
+      - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35 # v1.3.0
+        with: { jobs: "${{ toJSON(needs) }}" }
