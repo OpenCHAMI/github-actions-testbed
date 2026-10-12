@@ -115,6 +115,35 @@ nfpms:
     rpm:
       signature:
         key_file: "{{ .Env.GPG_KEY_PATH }}"
+  # Binary package: one per goarch, so a single package glob matches several
+  # files across architectures.
+  - id: testbed
+    package_name: testbed
+    ids: [testbed]
+    formats: [rpm, deb]
+    file_name_template: "{{ .ConventionalFileName }}"
+    vendor: OpenCHAMI
+    homepage: https://github.com/OpenCHAMI/github-actions-testbed
+    maintainer: "Sean Tronsen <sean.tronsen@gmail.com>"
+    description: Test binary package for the OpenCHAMI github-actions workflows.
+    license: MIT
+    section: admin
+    contents:
+      - src: LICENSES/MIT.txt
+        dst: /usr/share/licenses/testbed/MIT.txt
+        type: license
+        packager: rpm
+      - src: packaging/deb/copyright
+        dst: /usr/share/doc/testbed/copyright
+        packager: deb
+    overrides:
+      rpm:
+        release: "1.el9"
+      deb:
+        release: "1"
+    rpm:
+      signature:
+        key_file: "{{ .Env.GPG_KEY_PATH }}"
 
 release:
   disable: '{{ if eq .Env.IS_PR_BUILD "true" }}true{{ else }}false{{ end }}'

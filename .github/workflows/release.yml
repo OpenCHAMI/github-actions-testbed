@@ -78,6 +78,14 @@ jobs:
             - /usr/share/licenses/testbed-quadlet/MIT.txt
           deb-files:
             - /usr/share/doc/testbed-quadlet/copyright
+        # Per-arch binary package; `[-_][0-9]` keeps it from matching testbed-quadlet.
+        - name: testbed[-_][0-9]*
+          files:
+            - /usr/bin/testbed
+          rpm-files:
+            - /usr/share/licenses/testbed/MIT.txt
+          deb-files:
+            - /usr/share/doc/testbed/copyright
 
   publish:
     if: ${{ github.event_name == 'push' }}
