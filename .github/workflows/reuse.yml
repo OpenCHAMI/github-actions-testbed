@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   check:
-    uses: OpenCHAMI/github-actions/.github/workflows/reuse.yml@ebefc849e9e8069cf53b97e7fdd4b4ac8d3c2067 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/reuse.yml@8708e0d6dc89d72a6a07fc3f204dfb3a798b9f6a # github-actions under test (seantronsen/feat/redesign-deployment)
 
   reuse:
     if: ${{ always() }}
