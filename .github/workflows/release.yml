@@ -69,21 +69,14 @@ jobs:
     uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@ed7b2c6979b2bd98f3fc4a18a60c674d7d085964 # github-actions under test (seantronsen/feat/redesign-deployment)
     with:
       packages: |
-        - name: testbed-quadlet*.rpm
+        - name: testbed-quadlet*
           files:
-            - /etc/openchami
-            - /etc/openchami/configs
             - /etc/openchami/configs/testbed.yaml
             - /usr/share/containers/systemd/testbed.container
-            - /usr/share/containers/systemd/testbed.container.d
             - /usr/share/containers/systemd/testbed.container.d/10-defaults.conf
-            - /usr/share/licenses/testbed-quadlet
+          rpm-files:
             - /usr/share/licenses/testbed-quadlet/MIT.txt
-        - name: testbed-quadlet*.deb
-          files:
-            - /etc/openchami/configs/testbed.yaml
-            - /usr/share/containers/systemd/testbed.container
-            - /usr/share/containers/systemd/testbed.container.d/10-defaults.conf
+          deb-files:
             - /usr/share/doc/testbed-quadlet/copyright
 
   publish:
