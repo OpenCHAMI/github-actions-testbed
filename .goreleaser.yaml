@@ -60,6 +60,27 @@ dockers_v2:
       org.opencontainers.image.revision: "{{ .FullCommit }}"
       org.opencontainers.image.created: "{{ .Date }}"
       org.opencontainers.image.source: https://github.com/OpenCHAMI/github-actions-testbed
+  # Second, distinctly named image (different title label, so a different
+  # digest) to exercise per-image attestation.
+  - id: testbed-alt
+    ids: [testbed]
+    dockerfile: Dockerfile
+    images:
+      - ghcr.io/openchami/github-actions-testbed-alt
+    tags:
+      - "{{ .Tag }}"                                   # vX.Y.Z or pr-N
+      - '{{ if ne .Env.IS_PR_BUILD "true" }}{{ .Major }}.{{ .Minor }}{{ end }}'
+      - '{{ if ne .Env.IS_PR_BUILD "true" }}{{ .Major }}{{ end }}'
+      - '{{ if ne .Env.IS_PR_BUILD "true" }}latest{{ end }}'
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    labels:
+      org.opencontainers.image.title: "{{ .ProjectName }}-alt"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.source: https://github.com/OpenCHAMI/github-actions-testbed
 
 nfpms:
   - id: testbed-quadlet
