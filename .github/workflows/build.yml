@@ -14,13 +14,13 @@ permissions:
 
 jobs:
   goreleaser:
-    uses: OpenCHAMI/github-actions/.github/workflows/build-check-goreleaser.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/build-check-goreleaser.yml@ed7b2c6979b2bd98f3fc4a18a60c674d7d085964 # github-actions under test (seantronsen/feat/redesign-deployment)
     with:
       go-version-file: go.mod
 
   validate:
     needs: goreleaser
-    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@ed7b2c6979b2bd98f3fc4a18a60c674d7d085964 # github-actions under test (seantronsen/feat/redesign-deployment)
     with:
       packages: |
         - name: testbed-quadlet*.rpm

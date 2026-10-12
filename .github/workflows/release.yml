@@ -43,7 +43,7 @@ jobs:
       packages: write      # image push, container provenance
       id-token: write      # Sigstore signing (attest-build-provenance)
       attestations: write  # build provenance attestations
-    uses: OpenCHAMI/github-actions/.github/workflows/build-release-goreleaser.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/build-release-goreleaser.yml@ed7b2c6979b2bd98f3fc4a18a60c674d7d085964 # github-actions under test (seantronsen/feat/redesign-deployment)
     with:
       go-version-file: go.mod
       registry-subject-name: ghcr.io/openchami/github-actions-testbed
@@ -54,7 +54,7 @@ jobs:
     # Fork PRs build but don't push, so there is no image to scan.
     needs: goreleaser
     if: ${{ needs.goreleaser.outputs.digest != '' }}
-    uses: OpenCHAMI/github-actions/.github/workflows/trivy-image-scan.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/trivy-image-scan.yml@ed7b2c6979b2bd98f3fc4a18a60c674d7d085964 # github-actions under test (seantronsen/feat/redesign-deployment)
     permissions:
       contents: read          # baseline for checkout
       security-events: write  # SARIF upload to GHAS
@@ -66,7 +66,7 @@ jobs:
     # PR builds produce no packages (they're validated in build.yml).
     if: ${{ github.event_name == 'push' }}
     needs: goreleaser
-    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@ed7b2c6979b2bd98f3fc4a18a60c674d7d085964 # github-actions under test (seantronsen/feat/redesign-deployment)
     with:
       packages: |
         - name: testbed-quadlet*.rpm
@@ -91,4 +91,4 @@ jobs:
     needs: [goreleaser, validate]
     permissions:
       contents: write   # publish the draft GitHub Release
-    uses: OpenCHAMI/github-actions/.github/workflows/publish-release.yml@5b8f3decfae1c29ef4004a6f49f1593d25eccc95 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/publish-release.yml@ed7b2c6979b2bd98f3fc4a18a60c674d7d085964 # github-actions under test (seantronsen/feat/redesign-deployment)
