@@ -18,10 +18,11 @@ permissions:
 
 jobs:
   test-unit-go:
-    uses: OpenCHAMI/github-actions/.github/workflows/test-unit-go.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/test-unit-go.yml@94dcf268d84a4bf0396e2a93f56769199cd7cb7a # github-actions under test (seantronsen/feat/runner-selection)
     with:
       go-version-file: go.mod
       coverage: true
+      runner: ubuntu-latest  # exercises the runner input (default: ubuntu-slim)
 
   test:
     if: ${{ always() }}
