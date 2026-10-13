@@ -50,15 +50,15 @@ jobs:
       gpg-key: ${{ github.event_name == 'push' && needs.test-key.outputs.gpg-key-b64 || '' }}
 
   trivy:
-    # Fork PRs build but don't push, so there is no image to scan.
+    # Scans the images named in .goreleaser.yaml (testbed and testbed-alt) at
+    # this run's tag (pr-<N> on PRs); fork PRs push nothing, so nothing matches.
     needs: goreleaser
-    if: ${{ needs.goreleaser.outputs.digest != '' }}
-    uses: OpenCHAMI/github-actions/.github/workflows/trivy-image-scan.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/trivy-image-scan.yml@3f4837668325e804c057a415e108d1393af3406a # github-actions under test (seantronsen/feat/decouple-trivy)
     permissions:
       contents: read          # baseline for checkout
+      packages: read          # read image versions
       security-events: write  # SARIF upload to GHAS
     with:
-      image-ref: ghcr.io/openchami/github-actions-testbed@${{ needs.goreleaser.outputs.digest }}
       exit-code: '0'
 
   validate:
