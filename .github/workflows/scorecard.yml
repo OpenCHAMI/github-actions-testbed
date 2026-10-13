@@ -19,7 +19,7 @@ jobs:
       contents: read          # baseline for checkout
       security-events: write  # SARIF upload to GHAS
       id-token: write         # publish results to the OpenSSF dashboard
-    uses: OpenCHAMI/github-actions/.github/workflows/scorecard.yml@8708e0d6dc89d72a6a07fc3f204dfb3a798b9f6a # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/scorecard.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
 
   scorecard:
     if: ${{ always() }}
