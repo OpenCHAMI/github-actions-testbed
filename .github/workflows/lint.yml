@@ -16,19 +16,22 @@ permissions:
 
 jobs:
   lint-go:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-go.yml@8708e0d6dc89d72a6a07fc3f204dfb3a798b9f6a # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-go.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
     with:
       go-version-file: go.mod
 
   lint-ci:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-ci.yml@8708e0d6dc89d72a6a07fc3f204dfb3a798b9f6a # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-ci.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
     permissions:
       contents: read          # baseline for checkout
       security-events: write  # zizmor SARIF upload to GHAS
 
+  lint-renovate:
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+
   lint:
     if: ${{ always() }}
-    needs: [lint-go, lint-ci]
+    needs: [lint-go, lint-ci, lint-renovate]
     runs-on: ubuntu-slim
     steps:
       - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35 # v1.3.0
