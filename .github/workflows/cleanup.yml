@@ -3,15 +3,17 @@
 
 name: cleanup
 
-# Deletes the pr-<N> images when a PR closes.
+# Deletes the pr-<N> images named in .goreleaser.yaml (testbed and
+# testbed-alt) when a PR closes.
 
 on:
   pull_request:
     types: [closed]
 
 permissions:
-  packages: write
+  contents: read   # checkout, to read .goreleaser.yaml
+  packages: write  # delete image versions
 
 jobs:
   cleanup:
-    uses: OpenCHAMI/github-actions/.github/workflows/pr-registry-cleanup.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/pr-registry-cleanup.yml@7af41e39e2270b711bd18385f1586df9f7bf98de # github-actions under test (seantronsen/feat/decouple-pr-cleanup)
