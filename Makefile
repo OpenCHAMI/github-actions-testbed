@@ -3,17 +3,9 @@
 
 IMAGE_TAG   ?= $(shell git describe --tags --always --abbrev=0)
 QUADLET_DIR ?= build/quadlet
+CLEANFILES  := bin/ build/ dist/
 
-.PHONY: all
-all: build
-
-.PHONY: build
-build: ## Build the binary
-	go build -o bin/testbed ./cmd/testbed
-
-.PHONY: test
-test: ## Run unit tests
-	go test -race ./...
+include Makefile.common
 
 .PHONY: quadlet-render
 quadlet-render: ## Pin the quadlet image tag for packaging (accepts IMAGE_TAG, QUADLET_DIR)
@@ -23,7 +15,3 @@ quadlet-render: ## Pin the quadlet image tag for packaging (accepts IMAGE_TAG, Q
 		exit 1; \
 	fi
 	sed 's|@IMAGE_TAG@|$(IMAGE_TAG)|' packaging/systemd/testbed.container > $(QUADLET_DIR)/testbed.container
-
-.PHONY: clean
-clean: ## Remove build outputs
-	rm -rf bin build dist
