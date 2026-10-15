@@ -1,0 +1,94 @@
+# SPDX-FileCopyrightText: © 2026 OpenCHAMI a Series of LF Projects, LLC
+# SPDX-License-Identifier: MIT
+
+name: release
+
+# PR images and releases; build-release-goreleaser picks the mode from the
+# event:
+# - pull_request: pushes ghcr.io/openchami/github-actions-testbed:pr-<N>.
+# - v* tag push: semver images, signed packages, draft release, validation,
+#   then publish. Safe to tag freely: nothing depends on this repo.
+
+on:
+  pull_request:
+  push:
+    tags:
+      - v*
+
+permissions:
+  contents: read
+
+jobs:
+  # Throwaway signing key, regenerated each run. Not a secret (it travels as
+  # a job output); fine here, since the packages are only for testing.
+  test-key:
+    runs-on: ubuntu-slim
+    outputs:
+      gpg-key-b64: ${{ steps.key.outputs.gpg-key-b64 }}
+    steps:
+      - name: Generate throwaway GPG key
+        id: key
+        run: |
+          set -euo pipefail
+          GNUPGHOME=$(mktemp -d)
+          export GNUPGHOME
+          gpg --batch --quiet --passphrase '' \
+            --quick-gen-key 'github-actions testbed throwaway key <noreply@openchami.org>' rsa3072 sign 1d
+          echo "gpg-key-b64=$(gpg --batch --armor --export-secret-keys | base64 -w0)" >> "$GITHUB_OUTPUT"
+
+  goreleaser:
+    needs: test-key
+    permissions:
+      contents: write      # release creation, uploading assets
+      packages: write      # image push, container provenance
+      id-token: write      # Sigstore signing (attest-build-provenance)
+      attestations: write  # build provenance attestations
+    uses: OpenCHAMI/github-actions/.github/workflows/build-release-goreleaser.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    with:
+      go-version-file: go.mod
+    secrets:
+      gpg-key: ${{ github.event_name == 'push' && needs.test-key.outputs.gpg-key-b64 || '' }}
+
+  trivy:
+    # Scans the images named in .goreleaser.yaml (testbed and testbed-alt) at
+    # this run's tag (pr-<N> on PRs); fork PRs push nothing, so nothing matches.
+    needs: goreleaser
+    uses: OpenCHAMI/github-actions/.github/workflows/trivy-image-scan.yml@3f4837668325e804c057a415e108d1393af3406a # github-actions under test (seantronsen/feat/decouple-trivy)
+    permissions:
+      contents: read          # baseline for checkout
+      packages: read          # read image versions
+      security-events: write  # SARIF upload to GHAS
+    with:
+      exit-code: '0'
+
+  validate:
+    # PR builds produce no packages (they're validated in build.yml).
+    if: ${{ github.event_name == 'push' }}
+    needs: goreleaser
+    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    with:
+      packages: |
+        - name: testbed-quadlet*
+          files:
+            - /etc/openchami/configs/testbed.yaml
+            - /usr/share/containers/systemd/testbed.container
+            - /usr/share/containers/systemd/testbed.container.d/10-defaults.conf
+          rpm-files:
+            - /usr/share/licenses/testbed-quadlet/MIT.txt
+          deb-files:
+            - /usr/share/doc/testbed-quadlet/copyright
+        # Per-arch binary package; `[-_][0-9]` keeps it from matching testbed-quadlet.
+        - name: testbed[-_][0-9]*
+          files:
+            - /usr/bin/testbed
+          rpm-files:
+            - /usr/share/licenses/testbed/MIT.txt
+          deb-files:
+            - /usr/share/doc/testbed/copyright
+
+  publish:
+    if: ${{ github.event_name == 'push' }}
+    needs: [goreleaser, validate]
+    permissions:
+      contents: write   # publish the draft GitHub Release
+    uses: OpenCHAMI/github-actions/.github/workflows/publish-release.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)

@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: © 2026 OpenCHAMI a Series of LF Projects, LLC
+# SPDX-License-Identifier: MIT
+
+[Unit]
+Description=OpenCHAMI github-actions testbed container
+
+[Container]
+ContainerName=%N
+Image=ghcr.io/openchami/github-actions-testbed:@IMAGE_TAG@
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

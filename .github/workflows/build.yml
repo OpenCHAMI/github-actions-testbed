@@ -1,0 +1,50 @@
+# SPDX-FileCopyrightText: © 2026 OpenCHAMI a Series of LF Projects, LLC
+# SPDX-License-Identifier: MIT
+
+name: build
+
+# Build check: GoReleaser snapshot build of everything, publishing nothing,
+# then package validation. The `build` job is the required status check.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  goreleaser:
+    uses: OpenCHAMI/github-actions/.github/workflows/build-check-goreleaser.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    with:
+      go-version-file: go.mod
+
+  validate:
+    needs: goreleaser
+    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    with:
+      packages: |
+        - name: testbed-quadlet*
+          files:
+            - /etc/openchami/configs/testbed.yaml
+            - /usr/share/containers/systemd/testbed.container
+            - /usr/share/containers/systemd/testbed.container.d/10-defaults.conf
+          rpm-files:
+            - /usr/share/licenses/testbed-quadlet/MIT.txt
+          deb-files:
+            - /usr/share/doc/testbed-quadlet/copyright
+        # Per-arch binary package; `[-_][0-9]` keeps it from matching testbed-quadlet.
+        - name: testbed[-_][0-9]*
+          files:
+            - /usr/bin/testbed
+          rpm-files:
+            - /usr/share/licenses/testbed/MIT.txt
+          deb-files:
+            - /usr/share/doc/testbed/copyright
+
+  build:
+    if: ${{ always() }}
+    needs: [goreleaser, validate]
+    runs-on: ubuntu-slim
+    steps:
+      - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35 # v1.3.0
+        with: { jobs: "${{ toJSON(needs) }}" }
