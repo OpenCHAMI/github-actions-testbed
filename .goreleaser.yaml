@@ -37,8 +37,9 @@ archives:
     files:
       - LICENSES/*
 
+# gpg-sign-artifacts signs this file; the name must be exactly checksums.txt.
 checksum:
-  name_template: "{{ .ProjectName }}_checksums.txt"
+  name_template: checksums.txt
 
 dockers_v2:
   - id: testbed
@@ -133,9 +134,6 @@ nfpms:
         dependencies:
           - podman (>= 5.0.0)
           - systemd
-    rpm:
-      signature:
-        key_file: "{{ .Env.GPG_KEY_PATH }}"
   # Binary package: one per goarch, so a single package glob matches several
   # files across architectures.
   - id: testbed
@@ -162,21 +160,11 @@ nfpms:
         release: "1.el9"
       deb:
         release: "1"
-    rpm:
-      signature:
-        key_file: "{{ .Env.GPG_KEY_PATH }}"
 
 release:
   disable: '{{ if eq .Env.IS_PR_BUILD "true" }}true{{ else }}false{{ end }}'
   name_template: "v{{ .Version }}"
   prerelease: auto
-  footer: |
-    ## Verifying packages
-
-    ```bash
-    rpm --import gpg-public-key.asc
-    rpm -K testbed-quadlet-*.rpm
-    ```
 
 changelog:
   use: git
