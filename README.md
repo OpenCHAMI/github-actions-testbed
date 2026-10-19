@@ -33,8 +33,9 @@ workflows end to end, releases included, and doubles as the template for wiring
 them into a service repo. Nothing depends on its images, packages, or releases.
 
 It exercises every GoReleaser release effect: binaries, archives, a multi-arch
-image (`dockers_v2`), rpm/deb quadlet packages, signing (with a throwaway key
-generated per run), attestations, and the GitHub release.
+image (`dockers_v2`), rpm/deb quadlet packages, attestations, and the GitHub
+release, plus release signing (`checksums.txt`, through the repo's real key
+chain, like any other OpenCHAMI repo).
 
 ## Using this as a template
 
@@ -47,8 +48,9 @@ generated per run), attestations, and the GitHub release.
    files.
 4. Pin `OpenCHAMI/github-actions` to a release (or SHA) instead of the testbed's
    branch pin.
-5. Replace the throwaway `test-key` job in `release.yml` with your real signing
-   key secret. Annotated GoReleaser reference:
+5. Provision your repo's key as the `GPG_REPO_CERT_KEY_B64` secret; `sign`
+   also reads the `MASTER_PUBLIC_ASC` / `MASTER_FPR` org secrets. Annotated
+   GoReleaser reference:
    [`.goreleaser.example.yml`](https://github.com/OpenCHAMI/github-actions/blob/main/.goreleaser.example.yml).
 
 ## Testing the workflows
