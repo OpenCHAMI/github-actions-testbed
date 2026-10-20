@@ -4,6 +4,8 @@
 IMAGE_TAG   ?= $(shell git describe --tags --always --abbrev=0)
 QUADLET_DIR ?= build/quadlet
 CLEANFILES  := bin/ build/ dist/
+# cmd/client is Fabrica's generated CLI; only the server ships.
+BINARIES    := testbed:./cmd/server
 
 include Makefile.common
 
