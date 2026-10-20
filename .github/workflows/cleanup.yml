@@ -16,4 +16,4 @@ permissions:
 
 jobs:
   cleanup:
-    uses: OpenCHAMI/github-actions/.github/workflows/pr-registry-cleanup.yml@7af41e39e2270b711bd18385f1586df9f7bf98de # github-actions under test (seantronsen/feat/decouple-pr-cleanup)
+    uses: OpenCHAMI/github-actions/.github/workflows/pr-registry-cleanup.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
