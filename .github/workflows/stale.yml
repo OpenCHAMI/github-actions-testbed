@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   stale:
-    uses: OpenCHAMI/github-actions/.github/workflows/stale.yml@ce924a777ca3efdd577e4e81d2819a1f14260935 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/stale.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
     permissions:
       issues: write          # label, comment on, and close stale issues
       pull-requests: write   # label, comment on, and close stale PRs
