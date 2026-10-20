@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   test-unit-go:
-    uses: OpenCHAMI/github-actions/.github/workflows/test-unit-go.yml@ce924a777ca3efdd577e4e81d2819a1f14260935 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/test-unit-go.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
     with:
       go-version-file: go.mod
       coverage: true

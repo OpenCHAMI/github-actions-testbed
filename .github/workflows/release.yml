@@ -26,7 +26,7 @@ jobs:
       packages: write      # image push, container provenance
       id-token: write      # Sigstore signing (attest-build-provenance)
       attestations: write  # build provenance attestations
-    uses: OpenCHAMI/github-actions/.github/workflows/build-release-goreleaser.yml@ce924a777ca3efdd577e4e81d2819a1f14260935 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/build-release-goreleaser.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
     with:
       go-version-file: go.mod
 
@@ -34,7 +34,7 @@ jobs:
     # Scans the images named in .goreleaser.yaml (testbed and testbed-alt) at
     # this run's tag (pr-<N> on PRs); fork PRs push nothing, so nothing matches.
     needs: goreleaser
-    uses: OpenCHAMI/github-actions/.github/workflows/trivy-image-scan.yml@ce924a777ca3efdd577e4e81d2819a1f14260935 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/trivy-image-scan.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
     permissions:
       contents: read          # baseline for checkout
       packages: read          # read image versions
@@ -46,7 +46,7 @@ jobs:
     # PR builds produce no packages (they're validated in build.yml).
     if: ${{ github.event_name == 'push' }}
     needs: goreleaser
-    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@ce924a777ca3efdd577e4e81d2819a1f14260935 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
     with:
       packages: |
         - name: testbed-quadlet*
@@ -70,7 +70,7 @@ jobs:
   sign:
     if: ${{ github.event_name == 'push' }}
     needs: goreleaser
-    uses: OpenCHAMI/github-actions/.github/workflows/gpg-sign-artifacts.yml@58e6941db0b15887955a8b1225247f19e74d9752 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/gpg-sign-artifacts.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
     secrets:
       repo-cert-key: ${{ secrets.GPG_REPO_CERT_KEY_B64 }}
       master-public-key: ${{ secrets.MASTER_PUBLIC_ASC }}
@@ -80,7 +80,7 @@ jobs:
     needs: sign
     permissions:
       contents: write   # edit the draft GitHub Release and upload files
-    uses: OpenCHAMI/github-actions/.github/workflows/release-modify.yml@c1e044b8f56c2e00e84cd6460b2d97fb7b956f4c # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/release-modify.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
     with:
       notes: |
         ${{ needs.sign.outputs.release-notes }}
@@ -93,4 +93,4 @@ jobs:
     needs: [validate, release-modify]
     permissions:
       contents: write   # publish the draft GitHub Release
-    uses: OpenCHAMI/github-actions/.github/workflows/release-publish.yml@c1e044b8f56c2e00e84cd6460b2d97fb7b956f4c # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/release-publish.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
