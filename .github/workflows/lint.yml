@@ -29,9 +29,14 @@ jobs:
   lint-renovate:
     uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@1c84ed734369d9a454e1b8443147fa738fadd648 # github-actions under test (seantronsen/feat/release-attestation)
 
+  lint-codegen-fabrica:
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@ce924a777ca3efdd577e4e81d2819a1f14260935 # github-actions under test (seantronsen/feat/release-attestation)
+    with:
+      go-version-file: go.mod
+
   lint:
     if: ${{ always() }}
-    needs: [lint-go, lint-ci, lint-renovate]
+    needs: [lint-go, lint-ci, lint-renovate, lint-codegen-fabrica]
     runs-on: ubuntu-slim
     steps:
       - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35 # v1.3.0

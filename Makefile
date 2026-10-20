@@ -9,7 +9,7 @@ all: build
 
 .PHONY: build
 build: ## Build the binary
-	go build -o bin/testbed ./cmd/testbed
+	go build -o bin/testbed ./cmd/server
 
 .PHONY: test
 test: ## Run unit tests

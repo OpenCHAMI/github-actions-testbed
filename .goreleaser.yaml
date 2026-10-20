@@ -17,18 +17,19 @@ before:
 
 builds:
   - id: testbed
-    main: ./cmd/testbed
+    main: ./cmd/server
     binary: testbed
     goos: [linux]
     goarch: [amd64, arm64]
     env:
       - CGO_ENABLED=0
+    # Version variables declared by Fabrica's generated version_generated.go.
     ldflags:
       - >-
         -s -w
-        -X main.version={{ .Version }}
-        -X main.commit={{ .Commit }}
-        -X main.buildHost={{ .Env.BUILD_HOST }}
+        -X main.serviceVersion={{ .Version }}
+        -X main.serviceCommit={{ .Commit }}
+        -X main.serviceDate={{ .Date }}
 
 archives:
   - id: testbed
