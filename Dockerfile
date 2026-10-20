@@ -6,3 +6,4 @@ FROM gcr.io/distroless/static
 ARG TARGETPLATFORM
 COPY $TARGETPLATFORM/testbed /usr/bin/testbed
 ENTRYPOINT ["/usr/bin/testbed"]
+CMD ["serve"]
