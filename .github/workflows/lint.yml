@@ -33,13 +33,21 @@ jobs:
     uses: OpenCHAMI/github-actions/.github/workflows/lint-makefile-common.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
 
   lint-codegen-fabrica:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@ce924a777ca3efdd577e4e81d2819a1f14260935 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@861e95d552181a730e085f487769f1c66696d813 # github-actions under test (seantronsen/fix/codegen-lint)
     with:
       go-version-file: go.mod
 
+  lint-docs:
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-docs.yml@04614d708f9f16283e4234412348b7814689c6e9 # github-actions under test (seantronsen/feat/lint-docs)
+    permissions:
+      contents: read          # baseline for checkout
+      pull-requests: read     # list the PR's changed files
+      security-events: write  # SARIF upload to GHAS
+      issues: write           # broken-links issue on the default branch
+
   lint:
     if: ${{ always() }}
-    needs: [lint-go, lint-ci, lint-renovate, lint-makefile-common, lint-codegen-fabrica]
+    needs: [lint-go, lint-ci, lint-renovate, lint-makefile-common, lint-codegen-fabrica, lint-docs]
     runs-on: ubuntu-slim
     steps:
       - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35 # v1.3.0

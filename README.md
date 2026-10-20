@@ -66,5 +66,7 @@ the result; `make generate-check` is what CI runs.
   `release.yml` pushes `ghcr.io/openchami/github-actions-testbed:pr-<N>`;
   closing the PR runs `cleanup.yml`.
 - **Release mode**: push a `v*` tag (e.g. `v0.0.1`). Tag freely.
+- **Docs links**: a PR that changes docs runs `lint-docs`; broken links show
+  up as code scanning comments on the PR. On `main`, they go to an issue.
 - **Another github-actions ref**: update the pinned SHA in
   `.github/workflows/*.yml`.
