@@ -68,5 +68,7 @@ the result; `make generate-check` is what CI runs.
 - **Release mode**: push a `v*` tag (e.g. `v0.0.1`). Tag freely.
 - **Docs links**: a PR that changes docs runs `lint-docs`; broken links show
   up as code scanning comments on the PR. On `main`, they go to an issue.
+- **Go vulnerabilities**: `govulncheck` uploads findings to code scanning and
+  fails when a vulnerable symbol is called.
 - **Another github-actions ref**: update the pinned SHA in
   `.github/workflows/*.yml`.

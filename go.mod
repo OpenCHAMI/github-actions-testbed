@@ -3,6 +3,7 @@ module github.com/openchami/github-actions-testbed
 go 1.26.10
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/getkin/kin-openapi v0.151.0
 	github.com/go-chi/chi/v5 v5.5.0
 	github.com/openchami/fabrica v0.4.11
