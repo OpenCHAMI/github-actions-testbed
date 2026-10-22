@@ -13,7 +13,10 @@ permissions:
 
 jobs:
   check:
-    uses: OpenCHAMI/github-actions/.github/workflows/govulncheck.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/govulncheck.yml@9aa4f9e5a010d45cec4d108baacd1cdcb2aef40e # github-actions under test (seantronsen/feat/sarif-govulncheck)
+    permissions:
+      contents: read
+      security-events: write  # SARIF upload to GHAS
 
   govulncheck:
     if: ${{ always() }}
