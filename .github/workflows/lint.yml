@@ -10,6 +10,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '23 3 * * *'  # daily at 03:23 UTC
 
 permissions:
   contents: read
@@ -38,7 +40,7 @@ jobs:
       go-version-file: go.mod
 
   lint-docs:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-docs.yml@04614d708f9f16283e4234412348b7814689c6e9 # github-actions under test (seantronsen/feat/lint-docs)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-docs.yml@1ad5a2b3f96de5f175ac7c3ab4182aad203e0941 # github-actions under test (seantronsen/feat/sarif-govulncheck)
     permissions:
       contents: read          # baseline for checkout
       pull-requests: read     # list the PR's changed files

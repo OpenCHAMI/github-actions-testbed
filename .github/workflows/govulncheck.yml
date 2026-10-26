@@ -7,13 +7,19 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '23 3 * * *'  # daily at 03:23 UTC
 
 permissions:
   contents: read
 
 jobs:
   check:
-    uses: OpenCHAMI/github-actions/.github/workflows/govulncheck.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/govulncheck.yml@1ad5a2b3f96de5f175ac7c3ab4182aad203e0941 # github-actions under test (seantronsen/feat/sarif-govulncheck)
+    permissions:
+      contents: read          # baseline for checkout
+      security-events: write  # SARIF upload to GHAS
+      issues: write           # vulnerabilities issue on the default branch
 
   govulncheck:
     if: ${{ always() }}
