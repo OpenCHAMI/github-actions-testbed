@@ -32,9 +32,14 @@ jobs:
   lint-makefile-common:
     uses: OpenCHAMI/github-actions/.github/workflows/lint-makefile-common.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
 
+  lint-codegen-fabrica:
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@861e95d552181a730e085f487769f1c66696d813 # github-actions under test (seantronsen/fix/codegen-lint, PR 51)
+    with:
+      go-version-file: go.mod
+
   lint:
     if: ${{ always() }}
-    needs: [lint-go, lint-ci, lint-renovate, lint-makefile-common]
+    needs: [lint-go, lint-ci, lint-renovate, lint-makefile-common, lint-codegen-fabrica]
     runs-on: ubuntu-slim
     steps:
       - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35 # v1.3.0
