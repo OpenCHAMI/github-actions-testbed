@@ -37,18 +37,25 @@ image (`dockers_v2`), rpm/deb quadlet packages, attestations, and the GitHub
 release, plus release signing (`checksums.txt`, through the repo's real key
 chain, like any other OpenCHAMI repo).
 
+It's also a minimal [Fabrica](https://github.com/OpenCHAMI/fabrica) project
+(one `Widget` resource, file storage), so `lint-codegen-fabrica` has generated
+code to check. Edit `apis/` or `.fabrica.yaml`, run `make generate`, and commit
+the result; `make generate-check` is what CI runs.
+
 ## Using this as a template
 
 1. Copy `.github/workflows/`, `.goreleaser.yaml`, `Dockerfile`, `Makefile`'s
    `quadlet-render` target, and `packaging/`.
 2. Rename `testbed` / `github-actions-testbed` to your project (binary, image,
    package name, quadlet, URLs, badges).
-3. Update the expected package file lists in `build.yml` and `release.yml`
+3. For a Fabrica project, keep the `lint-codegen-fabrica` job in `lint.yml`;
+   otherwise drop it.
+4. Update the expected package file lists in `build.yml` and `release.yml`
    (`validate-packages`): rpm lists every file and owned directory, deb only
    files.
-4. Pin `OpenCHAMI/github-actions` to a release (or SHA) instead of the testbed's
+5. Pin `OpenCHAMI/github-actions` to a release (or SHA) instead of the testbed's
    branch pin.
-5. Provision your repo's key as the `GPG_REPO_CERT_KEY_B64` secret; `sign`
+6. Provision your repo's key as the `GPG_REPO_CERT_KEY_B64` secret; `sign`
    also reads the `MASTER_PUBLIC_ASC` / `MASTER_FPR` org secrets. Annotated
    GoReleaser reference:
    [`.goreleaser.example.yml`](https://github.com/OpenCHAMI/github-actions/blob/main/.goreleaser.example.yml).
