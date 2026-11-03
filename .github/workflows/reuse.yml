@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   check:
-    uses: OpenCHAMI/github-actions/.github/workflows/reuse.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/reuse.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
 
   reuse:
     if: ${{ always() }}

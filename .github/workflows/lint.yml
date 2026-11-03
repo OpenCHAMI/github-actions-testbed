@@ -16,24 +16,24 @@ permissions:
 
 jobs:
   lint-go:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-go.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-go.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
     with:
       go-version-file: go.mod
 
   lint-ci:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-ci.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-ci.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
     permissions:
       contents: read          # baseline for checkout
       security-events: write  # zizmor SARIF upload to GHAS
 
   lint-renovate:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
 
   lint-makefile-common:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-makefile-common.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-makefile-common.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
 
   lint-codegen-fabrica:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@861e95d552181a730e085f487769f1c66696d813 # github-actions under test (seantronsen/fix/codegen-lint, PR 51)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
     with:
       go-version-file: go.mod
 

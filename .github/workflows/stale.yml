@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   stale:
-    uses: OpenCHAMI/github-actions/.github/workflows/stale.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/stale.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
     permissions:
       issues: write          # label, comment on, and close stale issues
       pull-requests: write   # label, comment on, and close stale PRs

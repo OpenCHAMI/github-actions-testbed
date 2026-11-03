@@ -14,13 +14,13 @@ permissions:
 
 jobs:
   goreleaser:
-    uses: OpenCHAMI/github-actions/.github/workflows/build-check-goreleaser.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/build-check-goreleaser.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
     with:
       go-version-file: go.mod
 
   validate:
     needs: goreleaser
-    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/validate-packages.yml@ec67a926c858892c2e5e18fed111d7a7720384f3 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
     with:
       packages: |
         - name: testbed-quadlet*
