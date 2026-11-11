@@ -30,7 +30,7 @@ jobs:
     uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@1c84ed734369d9a454e1b8443147fa738fadd648 # github-actions under test (seantronsen/feat/release-attestation)
 
   lint-codegen-fabrica:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@861e95d552181a730e085f487769f1c66696d813 # github-actions under test (seantronsen/fix/codegen-lint, PR 51)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@5465b701d85559086f6a9f5d075f8b5ba81e682f # github-actions under test (seantronsen/fix/codegen-lint, PR 51)
     with:
       go-version-file: go.mod
 
