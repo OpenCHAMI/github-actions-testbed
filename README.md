@@ -42,6 +42,11 @@ It's also a minimal [Fabrica](https://github.com/OpenCHAMI/fabrica) project
 code to check. Edit `apis/` or `.fabrica.yaml`, run `make generate`, and commit
 the result; `make generate-check` is what CI runs.
 
+> [!NOTE]
+> TODO: `make generate`, `make generate-check`, and the `lint-codegen-fabrica`
+> check are disabled until `Makefile.common` lands through
+> OpenCHAMI/github-actions#68 (RFD OpenCHAMI/roadmap#143). Re-enable them then.
+
 ## Using this as a template
 
 1. Copy `.github/workflows/`, `.goreleaser.yaml`, `Dockerfile`, `Makefile`'s

@@ -29,14 +29,16 @@ jobs:
   lint-renovate:
     uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@1c84ed734369d9a454e1b8443147fa738fadd648 # github-actions under test (seantronsen/feat/release-attestation)
 
-  lint-codegen-fabrica:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@ede12aa9179dd5dad6869133a63656b8d3b07974 # github-actions under test (seantronsen/fix/codegen-lint, PR 51)
-    with:
-      go-version-file: go.mod
+  # Disabled: lint-codegen-fabrica runs the caller's `make generate-check`, which
+  # now depends on OpenCHAMI/github-actions#68 and RFD OpenCHAMI/roadmap#143.
+  # lint-codegen-fabrica:
+  #   uses: OpenCHAMI/github-actions/.github/workflows/lint-codegen-fabrica.yml@ede12aa9179dd5dad6869133a63656b8d3b07974 # github-actions under test (seantronsen/fix/codegen-lint, PR 51)
+  #   with:
+  #     go-version-file: go.mod
 
   lint:
     if: ${{ always() }}
-    needs: [lint-go, lint-ci, lint-renovate, lint-codegen-fabrica]
+    needs: [lint-go, lint-ci, lint-renovate]  # lint-codegen-fabrica: disabled, see above
     runs-on: ubuntu-slim
     steps:
       - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35 # v1.3.0
