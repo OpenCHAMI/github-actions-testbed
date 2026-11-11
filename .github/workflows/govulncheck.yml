@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   check:
-    uses: OpenCHAMI/github-actions/.github/workflows/govulncheck.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/govulncheck.yml@049945791f1739f6ce69c8f1c4e36abe4e647f50 # github-actions under test (seantronsen/feat/release-attestation)
 
   govulncheck:
     if: ${{ always() }}
