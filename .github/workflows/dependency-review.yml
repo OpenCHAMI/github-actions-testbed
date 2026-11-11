@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   check:
-    uses: OpenCHAMI/github-actions/.github/workflows/dependency-review.yml@5ce950505544262010e3b293b561964278ef6031 # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
+    uses: OpenCHAMI/github-actions/.github/workflows/dependency-review.yml@33d24d11aec767a3e5e0f99655510c79497ecced # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
     permissions:
       contents: read        # baseline for checkout
       pull-requests: write  # summary comment on the PR

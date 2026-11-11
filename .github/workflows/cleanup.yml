@@ -16,4 +16,4 @@ permissions:
 
 jobs:
   cleanup:
-    uses: OpenCHAMI/github-actions/.github/workflows/pr-registry-cleanup.yml@5ce950505544262010e3b293b561964278ef6031 # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
+    uses: OpenCHAMI/github-actions/.github/workflows/pr-registry-cleanup.yml@33d24d11aec767a3e5e0f99655510c79497ecced # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
