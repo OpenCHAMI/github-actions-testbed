@@ -70,7 +70,7 @@ jobs:
   sign:
     if: ${{ github.event_name == 'push' }}
     needs: goreleaser
-    uses: OpenCHAMI/github-actions/.github/workflows/gpg-sign-artifacts.yml@1c84ed734369d9a454e1b8443147fa738fadd648 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/gpg-sign-artifacts.yml@c903c6ddf97c1f9afa9d3eb906b5ed338a4e2ab9 # github-actions under test (seantronsen/feat/refactor-gpg-chain-verify)
     secrets:
       repo-cert-key: ${{ secrets.GPG_REPO_CERT_KEY_B64 }}
       master-public-key: ${{ secrets.MASTER_PUBLIC_ASC }}
