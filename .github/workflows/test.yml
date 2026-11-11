@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   test-unit-go:
-    uses: OpenCHAMI/github-actions/.github/workflows/test-unit-go.yml@94dcf268d84a4bf0396e2a93f56769199cd7cb7a # github-actions under test (seantronsen/feat/runner-selection)
+    uses: OpenCHAMI/github-actions/.github/workflows/test-unit-go.yml@5ce950505544262010e3b293b561964278ef6031 # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
     with:
       go-version-file: go.mod
       coverage: true
