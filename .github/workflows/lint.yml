@@ -16,21 +16,21 @@ permissions:
 
 jobs:
   lint-go:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-go.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-go.yml@049945791f1739f6ce69c8f1c4e36abe4e647f50 # github-actions under test (seantronsen/feat/release-attestation)
     with:
       go-version-file: go.mod
 
   lint-ci:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-ci.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-ci.yml@049945791f1739f6ce69c8f1c4e36abe4e647f50 # github-actions under test (seantronsen/feat/release-attestation)
     permissions:
       contents: read          # baseline for checkout
       security-events: write  # zizmor SARIF upload to GHAS
 
   lint-renovate:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@049945791f1739f6ce69c8f1c4e36abe4e647f50 # github-actions under test (seantronsen/feat/release-attestation)
 
   lint-makefile-common:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-makefile-common.yml@5a0ca6e79ffd9f8db2b517beb176039628d22095 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-makefile-common.yml@049945791f1739f6ce69c8f1c4e36abe4e647f50 # github-actions under test (seantronsen/feat/release-attestation)
 
   lint:
     if: ${{ always() }}
