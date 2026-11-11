@@ -37,7 +37,7 @@ jobs:
   #     go-version-file: go.mod
 
   lint-docs:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-docs.yml@04614d708f9f16283e4234412348b7814689c6e9 # github-actions under test (seantronsen/feat/lint-docs)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-docs.yml@9fcc406556ba5d2547cba09978c8b05a44673801 # github-actions under test (seantronsen/feat/lint-docs)
     permissions:
       contents: read          # baseline for checkout
       pull-requests: read     # list the PR's changed files
