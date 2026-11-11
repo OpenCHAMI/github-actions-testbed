@@ -75,6 +75,6 @@ the result; `make generate-check` is what CI runs.
   up as code scanning comments on the PR. On `main`, they go to an issue.
 - **Go vulnerabilities**: `govulncheck` fails when a vulnerable symbol is
   called; the call site shows up as a code scanning comment on the PR. On
-  `main`, they go to an issue.
+  the default branch, they go to code scanning.
 - **Another github-actions ref**: update the pinned SHA in
   `.github/workflows/*.yml`.

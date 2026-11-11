@@ -19,7 +19,6 @@ jobs:
     permissions:
       contents: read          # baseline for checkout
       security-events: write  # SARIF upload to GHAS
-      issues: write           # vulnerabilities issue on the default branch
 
   govulncheck:
     if: ${{ always() }}
