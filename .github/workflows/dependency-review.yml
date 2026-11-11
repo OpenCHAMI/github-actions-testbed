@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   check:
-    uses: OpenCHAMI/github-actions/.github/workflows/dependency-review.yml@049945791f1739f6ce69c8f1c4e36abe4e647f50 # github-actions under test (seantronsen/feat/release-attestation)
+    uses: OpenCHAMI/github-actions/.github/workflows/dependency-review.yml@1c84ed734369d9a454e1b8443147fa738fadd648 # github-actions under test (seantronsen/feat/release-attestation)
     permissions:
       contents: read        # baseline for checkout
       pull-requests: write  # summary comment on the PR
