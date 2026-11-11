@@ -16,18 +16,18 @@ permissions:
 
 jobs:
   lint-go:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-go.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-go.yml@33d24d11aec767a3e5e0f99655510c79497ecced # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
     with:
       go-version-file: go.mod
 
   lint-ci:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-ci.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-ci.yml@33d24d11aec767a3e5e0f99655510c79497ecced # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
     permissions:
       contents: read          # baseline for checkout
       security-events: write  # zizmor SARIF upload to GHAS
 
   lint-renovate:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@466cf8d13ea0a1c493f3bfe9c35cc155eb8da367 # github-actions under test (seantronsen/feat/redesign-deployment)
+    uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@33d24d11aec767a3e5e0f99655510c79497ecced # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
 
   lint:
     if: ${{ always() }}
