@@ -29,12 +29,9 @@ jobs:
   lint-renovate:
     uses: OpenCHAMI/github-actions/.github/workflows/lint-renovate.yml@5ce950505544262010e3b293b561964278ef6031 # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
 
-  lint-makefile-common:
-    uses: OpenCHAMI/github-actions/.github/workflows/lint-makefile-common.yml@5ce950505544262010e3b293b561964278ef6031 # github-actions under test (seantronsen/feat/makefile-drift-avoidance)
-
   lint:
     if: ${{ always() }}
-    needs: [lint-go, lint-ci, lint-renovate, lint-makefile-common]
+    needs: [lint-go, lint-ci, lint-renovate]
     runs-on: ubuntu-slim
     steps:
       - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35 # v1.3.0
