@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: © 2026 OpenCHAMI a Series of LF Projects, LLC
+# SPDX-License-Identifier: MIT
+
+project:
+    name: testbed
+    module: github.com/openchami/github-actions-testbed
+    description: Fabrica testbed for the OpenCHAMI github-actions workflows
+    created: 2026-10-20T09:31:45.79078442-06:00
+features:
+    validation:
+        enabled: true
+        mode: strict
+    events:
+        enabled: false
+        bus_type: memory
+    conditional:
+        enabled: true
+        etag_algorithm: sha256
+    auth:
+        enabled: false
+    storage:
+        enabled: true
+        type: file
+        db_driver: sqlite3
+    metrics:
+        enabled: false
+        provider: prometheus
+    reconciliation:
+        enabled: false
+        worker_count: 5
+        requeue_delay: 5
+    security:
+        authn:
+            enabled: false
+        authz:
+            enabled: false
+            mode: enforce
+generation:
+    handlers: true
+    storage: true
+    client: true
+    openapi: true
+    events: false
+    middleware: true
+    reconciliation: false
