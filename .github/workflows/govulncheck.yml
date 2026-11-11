@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   check:
-    uses: OpenCHAMI/github-actions/.github/workflows/govulncheck.yml@520a0c83084a83434de4188d669ea58d7bde9ef2 # github-actions under test (seantronsen/feat/sarif-govulncheck)
+    uses: OpenCHAMI/github-actions/.github/workflows/govulncheck.yml@facd9cde80f73c4833a455c764dea59cc87cc0de # github-actions under test (seantronsen/feat/sarif-govulncheck)
     permissions:
       contents: read          # baseline for checkout
       security-events: write  # SARIF upload to GHAS
